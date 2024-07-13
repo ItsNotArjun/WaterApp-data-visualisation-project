@@ -75,9 +75,8 @@
         <h2 class="subheading">Product Architecture</h2>
         <img src="architecture_diagram.png" alt="Architecture Diagram">
         <p>
-            Each WaterApp location consists of sensors, RTUs, and gateways. Sensors talk to RTUs (short-range wireless communication device) 
-            which further relay information to gateways (long-range wireless communication device). Gateways then upload sensor data to the cloud, 
-            which you can view on the app.
+            Each WaterApp location consists of sensors, RTUs, and gateways. Sensors talk to RTUs which further relay information to gateways. Gateways then 
+            upload data to the cloud using sim cards. This data can be viewed on the app.
         </p>
         <h2 class="subheading">The Problem</h2>
         <img src="over-under.png" alt="Over Under Image">
@@ -143,7 +142,7 @@
         <h3>Refresh</h3>
         <img src="refresh.png" alt="refresh">
         <p>
-            the refresh button updates the local database with the current readings from the cloud.
+            When current readings are required, the refresh button can be pressed. The refresh button updates the local database with the current readings from the cloud.
         </p>
         <p>In the left image, the data in the local database is older than 6 hours and the time filter is set to 6 hours. Due to this, no connections are shown.
             When refresh is called, the local database updates and recieves current data. Hence connections are seen.
