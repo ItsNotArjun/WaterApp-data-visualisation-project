@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization Project</title>
+    <style>
+        body {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            font-family: Monaco, monospace;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h1 {
+            color: #f5f5f5;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+        .note {
+            color: #bbbbbb;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        .timestamp {
+            color: #bbbbbb;
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 50%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+        .subheading {
+            color: #f5f5f5;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 1000px;
+            text-align: left; /* Left aligned */
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Data Visualization Project</h1>
+        <div class="note">Internship Project for WaterApp Technologies Private Limited</div>
+        <div class="timestamp">Last updated: <span id="timestamp"></span></div>
+        <img src="screenshot.png" alt="Project Screenshot">
+        <p>
+            For a summer project, I have done an internship with WaterApp Technologies Private Limited, an IoT-based company. 
+            I will give a general overview of the project and features here.
+        </p>
+        
+        <h2 class="subheading">Product Background</h2>
+        <p>
+            WaterApp is a product aimed towards solving water management issues. It works using smart IoT based sensors that are installed in water tanks.
+            These sensors send data to a app on your phone that gives alerts and messages regarding water level. It is a completely wireless system which means it's 
+            hastle free and it saves manpower costs by not requiring someone to climb on a tank to check the water level.
+        </p>
+        <h2 class="subheading">Product Architecture</h2>
+        <img src="architecture_diagram.png" alt="Architecture Diagram">
+        <p>
+            Each WaterApp location consists of sensors, RTUs, and gateways. Sensors talk to RTUs (short-range wireless communication device) 
+            which further relay information to gateways (long-range wireless communication device). Gateways then upload sensor data to the cloud, 
+            which you can view on the app.
+        </p>
+        <h2 class="subheading">The Problem</h2>
+        <img src="over-under.png" alt="Over Under Image">
+        <p>
+            Due to improper placement of gateways and RTUs in a site, a gateway might be talking to very few RTUs in a location which is inefficient 
+            or a gateway might be talking to too many RTUs in a location, leading it to get overloaded. Sometimes, RTUs might be talking to only one or two
+            gateways, which means that there is a single point of failure. Rarely, RTUs might talk to gateways from different 
+            locations entirely, which is sub-optimal as that means the RTU can't reach the gateway that is present in its current location.
+            These issues were hard to solve as there was no easy way to see how the nodes were communicating with each other.
+        </p>
+        <h2 class="subheading">The Idea</h2>
+        <p>
+            After brainstorming a bit, I figured that a neat way to solve this issue will be to create a graph/ chart that shows all the gateways 
+            and RTUs in a site and the communications taking place between them. This way, we get a clear visual understanding of all the nodes 
+            in a site and if there are any problems in them. It is an efficient way to view the health of a site. It is easy to use and understand 
+            which means it can be used by anyone with mminimal training.  
+        </p>
+        <img src="screenshot.png" alt="Tool Screenshot">
+        <p>
+            The Chart
+        </p>
+
+        <h2 class="subheading">How it Works</h2>
+        <i>
+            This project was coded in JavaScript, using React. For the actual rendering of the chart, I have used the D3 library for JS.
+        </i>
+        <p>
+            When the page loads for the first time, the code pulls data from a database in JSON form. This data contains a list of locations of all WaterApp sites. After the user
+            selects a site from the locations list, a chart of all the RTUs and gateways loads, with lines between the nodes to indicate RTUs and gateways talking
+            to each other.
+        </p>
+
+        <h3>Node Colours</h3>
+        <img src="all nodes.png" alt="all nodes">
+        <p>
+            There are five types of nodes. These are (left to right):
+            <ul>
+                <li>RTUs (blue circle)</li>
+                <li>gateway from current location (yellow square)</li>
+                <li>gateway from outside location (orange square)</li>
+                <li>gateway from current location not talking to anyone (red square)</li>
+                <li>RTU not talking to anyone (red circle)</li>
+            </ul>
+        </p>
+        <h3>Line Style</h3>
+        <img src="comms.png" alt="comms">
+        <p>
+            There are two types of connections, direct and redirected. Redirected communication means that a RTU transmits data which doesn't reach a gateway but instead reaches
+            a RTU, and that RTU re-transmits the original data to a gateway. This is not optimal as this means that a RTU can't reach a gateway directly. A direct connection
+            means a RTU talks to a gateway directly.
+        </p>
+
+        <h3>Clicked</h3>
+        <img src="on click.png" alt="onClick">
+        <p>
+            when a node is clicked, it highlights all the other nodes talking to it.
+        </p>
+        <p>
+              
+        </p>
+
+        <h2 class="subheading">Additional Features</h2>
+        <h3>Refresh</h3>
+        <img src="refresh.png" alt="refresh">
+        <p>
+            the refresh button updates the local database with the current readings from the cloud.
+        </p>
+        <p>In the left image, the data in the local database is older than 6 hours and the time filter is set to 6 hours. Due to this, no connections are shown.
+            When refresh is called, the local database updates and recieves current data. Hence connections are seen.
+        </p>
+
+        <h3>Time Filter</h3>
+        <img src="time filter.png" alt="time filter">
+        <p>(left) Filter set to 4h (right) Filter set to 2d</p>
+        <p>
+            The time filter allows you to sort data by time. Only readings recieved a certain time before the data was collected will be displayed.
+            On the left, only readings recieved in the last 4 hours are shown while on the right, readings are recieved in the last 2 days.
+        </p>
+        <p>
+            We can easily see some RTUs have talked to a Gateway in the last two days but not in the last four hours. 
+        </p>
+        <h3>Asset Table</h3>
+        <img src="asset table.png" alt="asset table">
+        <p>
+            When a node is clicked, the table gives information about the node. The table has three coulumns. Location Name, Asset Name and Connected Nodes.
+            Location name is useful for finding out which location off-site gateways are from. Asset Name helps to find out the actual name of the asset as finding a 
+            node by its unique id is hard to do. Connected nodes gives the asset name of all connected nodes.
+        </p>
+        <h3>Min RTU Connections toggle</h3>
+        <img src="min connections.png" alt="min connections">
+        <p>
+            Highlights nodes that are only talking to 1/2/3 other nodes. This is useful to find out vulnerabilities in the system.
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('timestamp').innerText = new Date().toLocaleString();
+    </script>
+</body>
+</html>
