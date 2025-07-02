@@ -680,8 +680,17 @@ function App() {
     setIsLoading(true);
     fetch(url)
       .then((res) => {
-        setIsLoading(false);
         return res.json();
+      })
+      .then((data) => {
+        fetch('https://callserver-5vu3ujcqja-uc.a.run.app/site_list?key=' + key)
+          .then((res2) => {
+            return res2.json();
+          })
+          .then((data2) => {
+            setLocations(data2);
+            setIsLoading(false);
+          })
       })
   }
   //=============================================================================
