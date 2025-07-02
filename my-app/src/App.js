@@ -16,9 +16,7 @@ import TableRow from '@mui/material/TableRow';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { Collapse, FormLabel, Radio, RadioGroup } from '@mui/material';
 //=============================================================================
 function App() {
@@ -653,7 +651,7 @@ function App() {
 
   //=============================================================================
   //refresh button
-  const handleClick = event => {
+  const handleRefreshClick = event => {
     let url1 = 'https://callserver-5vu3ujcqja-uc.a.run.app/location?key=' + key + '&id=';
     let urlRefresh = 'https://callserver-5vu3ujcqja-uc.a.run.app/location/refresh?key=' + key + '&id=';
 
@@ -674,6 +672,18 @@ function App() {
       });
   }
 
+  //=============================================================================
+  //site list refresh
+  const handleSiteListRefreshClick = event => {
+    let url = 'https://callserver-5vu3ujcqja-uc.a.run.app/site_list/refresh?key=' + key;
+
+    setIsLoading(true);
+    fetch(url)
+      .then((res) => {
+        setIsLoading(false);
+        return res.json();
+      })
+  }
   //=============================================================================
   //rtu connections
   const handleRadioChange = (event) => {
@@ -747,12 +757,12 @@ function App() {
           <div style={{ float: 'right', paddingTop: 7, paddingLeft: 23 }}>
             <LoadingButton
               disabled={fetchedData == null ? true : false}
-              onClick={handleClick}
+              onClick={handleRefreshClick}
               endIcon={<RefreshIcon />}
               loading={isLoading}
               loadingPosition="end"
             >
-              <span>Refresh</span>
+              <span>Refresh Data</span>
             </LoadingButton>
           </div>
 
@@ -805,8 +815,18 @@ function App() {
             <svg ref={svgRef}></svg>
           </div>
       }
+      <div>
+        <LoadingButton
+          onClick={handleSiteListRefreshClick}
+          endIcon={<RefreshIcon />}
+          loading={isLoading}
+          loadingPosition="end"
+        >
+          <span>Refresh Site List</span>
+        </LoadingButton>
+      </div>
     </div>
   )
-};
+}
 
 export default App;
